@@ -20,6 +20,7 @@ router.route('/:id/replies').post(protect, addReply);
 // admin routes
 router.route('/admin').get(protect, authorizeAdmin, getAllTickets);
 router.route('/admin/:id/status').get(protect, authorizeAdmin, updateTicketStatus);
+
 module.exports = router;
 
 

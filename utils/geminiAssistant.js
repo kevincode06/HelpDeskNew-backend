@@ -23,3 +23,5 @@ const getAiReply = async (ticketDescription) => {
 };
 
 module.exports = { getAiReply };
+
+// OsZAoB8h7nzO4M4r

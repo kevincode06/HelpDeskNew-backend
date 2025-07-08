@@ -1,11 +1,10 @@
-import { create } from "./userModel"
 
-const mongoose = required('mongoose')
+const mongoose = require('mongoose')
 
 const ticketSchema = mongoose.Schema(
     {
         user: {
-            type: mongoose.Schema.types.objectID,
+            type: mongoose.Schema.Types.ObjectId,
             required: true, 
             ref: 'User', // ref to the model user
         },
@@ -28,7 +27,7 @@ const ticketSchema = mongoose.Schema(
                     type: String,
                     required: true,
                 },
-                createAt: {
+                createdAt: {
                     type: Date,
                     default: Date.now,
                 },

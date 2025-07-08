@@ -1,44 +1,48 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs'); // For password hashing
 
-const userSchema = mongoose.Schema(
+// Define the User schema
+const userSchema =  new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, 'Please add a name'],
+            required: [true, 'Please add a name'], 
         },
         email: {
             type: String,
-            required: [true, 'Please add an email'],
-            unique: true,
+            required: [true, 'Please add an email'], 
+            unique: true, 
         },
         password: {
             type: String,
-            required: [true, 'Please add a password'],
+            required: [true, 'Please add a password'], 
         },
         isAdmin: {
             type: Boolean,
-            default: false,
+            default: false, 
         },
     },
     {
-        timestamps: true,
+        timestamps: true, 
     }
 );
 
-// Hash Password before saving
+// Middleware to hash the password before saving a new user or updating password
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
-        next();
+        next(); 
     }
-    const salt = await bcrypt.getSalt(10);
+
+    // Generate a salt for hashing
+    const salt = await bcrypt.genSalt(10);
+    // Hash the password using the generated salt
     this.password = await bcrypt.hash(this.password, salt);
-    next();
+    next(); 
 });
 
-// match user entered password to hashed password in the database
+// Method to compare entered password with the hashed password in the database
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
-}; 
+};
 
-module.exports = mongoose.model('User, userSchema');
+module.exports = mongoose.model('User', userSchema);
